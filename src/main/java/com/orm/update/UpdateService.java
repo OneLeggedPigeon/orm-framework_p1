@@ -1,15 +1,12 @@
-package com.revature.update;
+package com.orm.update;
 
-import com.revature.service.CarService;
-import com.revature.service.LoanService;
-import com.revature.service.OfferService;
-import com.revature.service.UserService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public  class UpdateService {
 
+    /*
     private static UpdateService instance;
 
     // Load EVERYTHING from the database
@@ -100,4 +97,6 @@ public  class UpdateService {
             System.exit(0);
         }
     }
+
+     */
 }

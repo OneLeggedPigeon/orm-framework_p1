@@ -1,4 +1,4 @@
-package com.revature.config;
+package com.orm.config;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,18 +13,17 @@ public class Config {
 
 
     //These should be overridable in the future, but going to leave as is for demo purposes
-    private final Path CONFIG_FILE_LOCATION = Paths.get("src/main/resources/william.config");
-    private Path logFileLocation;
+    private final Path CONFIG_FILE_LOCATION = Paths.get("src/main/resources/orm.config");
 
     //This would hold our properties in a map for later use
     private final Map<String, String> PROPERTIES = new HashMap<>();
 
     private Config() throws IOException {getProperties();}
 
-    private static LoggingConfig instance;
+    private static Config instance;
 
-    public static LoggingConfig getInstance() throws IOException {
-        return Optional.ofNullable(instance).orElse(instance = new LoggingConfig());
+    public static Config getInstance() throws IOException {
+        return Optional.ofNullable(instance).orElse(instance = new Config());
     }
 
     public Optional<String> getPropertyByKey(String key) {
@@ -46,6 +45,6 @@ public class Config {
 
 
     public static void main(String[] args) throws IOException {
-        LoggingConfig.getInstance().getProperties();
+        Config.getInstance().getProperties();
     }
 }

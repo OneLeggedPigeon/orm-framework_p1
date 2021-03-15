@@ -1,4 +1,6 @@
-package com.revature.connection;
+package com.orm.connection;
+
+import org.apache.log4j.lf5.Log4JLogRecord;
 
 import java.io.Closeable;
 import java.io.FileReader;
@@ -17,8 +19,14 @@ public class ConnectionFactory implements Closeable {
 
     private ConnectionFactory() {
         for(int i = 0; i< MAX_CONNECTIONS; i++){
-            System.out.println("adding connection number "+i+" to the connection pool");
-            connectionPool[i] = createConnection("dev");
+            //System.out.println("adding connection number "+i+" to the connection pool");
+            Properties props = new Properties();
+            try {
+                props.load(new FileReader("src/main/resources/orm.config"));
+                connectionPool[i] = createConnection(props.getProperty("connection-profile"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         try {
             Thread.sleep(1000);
@@ -39,14 +47,13 @@ public class ConnectionFactory implements Closeable {
     private Connection createConnection(String profile) {
         Properties props = new Properties();
         try {
-            props.load(new FileReader("src/main/resources/db.properties"));
+            props.load(new FileReader("src/main/resources/orm.properties"));
 
-            String connectionTemplate = "car.jdbc.connection.profile." + profile;
-            System.out.println("creating a connection");
+            String connectionTemplate = "com.revature.orm." + profile;
             return DriverManager.getConnection(
-                    props.getProperty(connectionTemplate + ".url"),
-                    props.getProperty(connectionTemplate + ".username"),
-                    props.getProperty(connectionTemplate + ".password"));
+                    props.getProperty(connectionTemplate+".url"),
+                    props.getProperty(connectionTemplate+".username"),
+                    props.getProperty(connectionTemplate+".password"));
         } catch (IOException | SQLException e) {
             e.printStackTrace();
             return null;

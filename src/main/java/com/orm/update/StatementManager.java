@@ -1,15 +1,16 @@
-package com.revature.update;
+package com.orm.update;
 
 import java.sql.Connection;
 
-public abstract class PreparedStatement {
+public abstract class StatementManager {
 
 
     public static void createLoan(int loanId, int customerId, int carId, int terms, double amount, int principle) {
+        /*
         try (ConnectionSession ses = new ConnectionSession()) {
             Connection conn = ses.getActiveConnection();
             java.sql.PreparedStatement ps = conn.prepareStatement(
-                    "INSERT INTO loan (loan_id, user_id, car_id, remaining_terms, monthly_due, principle) VALUES(?, ?, ?, ?, ?, ?)"
+                    new PreparedInsert().text;
             );
             ps.setInt(1, loanId);
             ps.setInt(2, customerId);
@@ -22,5 +23,7 @@ public abstract class PreparedStatement {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+         */
     }
 }
