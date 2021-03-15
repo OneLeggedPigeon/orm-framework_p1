@@ -4,25 +4,25 @@ package com.orm.datatype;
 import java.util.EnumMap;
 
 public class DataTypeEnums {
-    private final EnumMap<DataTypes,String> pgDataTypes = new EnumMap<DataTypes,String>(DataTypes.class);
+    private final EnumMap<DataType,String> pgDataTypes = new EnumMap<DataType,String>(DataType.class);
 
-    private DataTypeEnums instance;
+    private static DataTypeEnums instance;
 
     // currently set for postgresql
     private DataTypeEnums() {
-        pgDataTypes.put(DataTypes.TEXT,"text");
-        pgDataTypes.put(DataTypes.BOOL,"bool");
-        pgDataTypes.put(DataTypes.INT,"int4");
-        pgDataTypes.put(DataTypes.FLOAT,"float8");
-        pgDataTypes.put(DataTypes.SERIAL,"serial");
+        pgDataTypes.put(DataType.TEXT,"text");
+        pgDataTypes.put(DataType.BOOL,"bool");
+        pgDataTypes.put(DataType.INT,"int4");
+        pgDataTypes.put(DataType.FLOAT,"float8");
+        pgDataTypes.put(DataType.SERIAL,"serial");
     }
 
-    public DataTypeEnums getInstance(){
+    public static DataTypeEnums getInstance(){
         if(instance == null) return new DataTypeEnums();
         return instance;
     }
 
-    public String getDataType(DataTypes e){
+    public String getDataType(DataType e){
         return pgDataTypes.get(e);
     }
 }

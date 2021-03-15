@@ -1,6 +1,6 @@
 package com.orm.datatype;
 
-public enum DataTypes {
+public enum DataType {
     TEXT,
     BOOL,
     INT,

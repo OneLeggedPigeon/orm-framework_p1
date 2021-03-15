@@ -1,6 +1,6 @@
 package com.orm.update;
 
-public class PreparedSelect extends PreparedStatement {
+public class PreparedSelect extends Prepared {
 
     // SELECT (columns) FROM destination
     public PreparedSelect(String destination, String[] columns) {

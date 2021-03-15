@@ -1,14 +1,17 @@
 package com.orm.update;
 
-public class PreparedTable extends PreparedStatement{
+import com.orm.datatype.DataTypeEnums;
+import com.orm.datatype.DataType;
+
+public class PreparedTable extends Prepared {
 
     /*
      * arguments:
      *  name: the name of the new table
-     *  columns[][0]: array of columns to add
-     *  columns[][1]: array of matched data types for each column
+     *  columns[]: array of columns to add
+     *  dataTypes[]: array of matched DataType enums for each column
      *
-     * table creation for postgres TODO: change the pk setting based on driver type
+     * table creation
      *  CREATE TABLE name (
      *      name+'_id' serial NOT NULL,
      *      columns[0][0] columns[0][1],
@@ -18,14 +21,16 @@ public class PreparedTable extends PreparedStatement{
      *      PRIMARY KEY (name+'_id')
      *  );
      */
-    public PreparedTable(String name, String[][] columns) {
+    public PreparedTable(String name, String[] columns, DataType[] dataTypes) {
         StringBuilder t = new StringBuilder();
+        DataTypeEnums data = DataTypeEnums.getInstance();
         String pk = name+"_id";
-        t.append("CREATE TABLE").append(name).append(" (");
-        t.append(pk).append(" serial NOT NULL, ");
+
+        t.append("CREATE TABLE ").append(name).append(" (");
+        t.append(pk).append(" ").append(data.getDataType(DataType.SERIAL)).append(" NOT NULL, ");
         size = columns.length;
         for (int i = 0; i < size; i++) {
-            t.append(columns[i][0]).append(" ").append(columns[i][1]).append(", ");
+            t.append(columns[i]).append(" ").append(data.getDataType(dataTypes[i])).append(", ");
         }
         t.append("PRIMARY KEY (").append(pk).append("))");
         text = t.toString();

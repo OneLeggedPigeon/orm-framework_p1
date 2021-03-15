@@ -1,6 +1,6 @@
 package com.orm.update;
 
-public class PreparedInsert extends PreparedStatement {
+public class PreparedInsert extends Prepared {
 
     // INSERT INTO destination (columns) VALUES (?,...,?)
     public PreparedInsert(String destination, String[] columns) {
