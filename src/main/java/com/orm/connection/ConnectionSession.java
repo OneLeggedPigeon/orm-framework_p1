@@ -1,5 +1,6 @@
 package com.orm.connection;
 
+import com.orm.ORMLogger;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -14,7 +15,9 @@ public class ConnectionSession implements AutoCloseable {
             Connection conn = ConnectionFactory.getInstance().getConnectionPool()[i];
             if(conn != null){
                 Logger.getLogger(ConnectionSession.class.getName()).debug("gathering connection id: " + i + " to give to the object");
-                //System.out.println("gathering connection id: " + i + " to give to the object");
+
+                ORMLogger.ormLog.debug("gathering connection id: " + i + " to give to the object");
+
                 activeConnection = conn;
                 ConnectionFactory.getInstance().getConnectionPool()[i] = null;
                 locationIndex = i;

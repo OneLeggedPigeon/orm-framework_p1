@@ -11,11 +11,8 @@ import java.util.Optional;
 
 public class Config {
 
-
-    //These should be overridable in the future, but going to leave as is for demo purposes
     private final Path CONFIG_FILE_LOCATION = Paths.get("src/main/resources/orm.config");
 
-    //This would hold our properties in a map for later use
     private final Map<String, String> PROPERTIES = new HashMap<>();
 
     private Config() throws IOException {getProperties();}
@@ -41,10 +38,5 @@ public class Config {
             String[] splits = line.split("=");
             PROPERTIES.put(splits[0], splits[1].replace("\"",""));
         });
-    }
-
-
-    public static void main(String[] args) throws IOException {
-        Config.getInstance().getProperties();
     }
 }

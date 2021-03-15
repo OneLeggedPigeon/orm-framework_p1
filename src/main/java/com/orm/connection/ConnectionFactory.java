@@ -1,5 +1,7 @@
 package com.orm.connection;
 
+import com.orm.ORMLogger;
+import org.apache.log4j.Logger;
 import org.apache.log4j.lf5.Log4JLogRecord;
 
 import java.io.Closeable;
@@ -19,7 +21,9 @@ public class ConnectionFactory implements Closeable {
 
     private ConnectionFactory() {
         for(int i = 0; i< MAX_CONNECTIONS; i++){
-            //System.out.println("adding connection number "+i+" to the connection pool");
+
+            ORMLogger.ormLog.debug("adding connection number "+i+" to the connection pool");
+
             Properties props = new Properties();
             try {
                 props.load(new FileReader("src/main/resources/orm.config"));
