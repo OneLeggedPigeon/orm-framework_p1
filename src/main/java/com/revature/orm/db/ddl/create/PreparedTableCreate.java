@@ -8,14 +8,9 @@ import com.revature.orm.db.ddl.TableManager;
 // Holds information for a CREATE table operation
 public class PreparedTableCreate extends PreparedTable {
 
-    /*
-     * arguments:
-     *  name: the name of the new table
-     *  columns[]: array of columns to add
-     *  dataTypes[]: array of matched DataType enums for each column
-     *
+    /**
      * table creation
-     *  CREATE TABLE name (
+     *      CREATE TABLE name (
      *      name+'_id' serial NOT NULL,
      *      columns[0][0] columns[0][1],
      *      columns[1][0] columns[1][1],
@@ -23,6 +18,9 @@ public class PreparedTableCreate extends PreparedTable {
      *      columns[][0] columns[][1],
      *      PRIMARY KEY (name+'_id')
      *  );
+     * @param name the name of the new table
+     * @param columns array of columns to add
+     * @param dataTypes array of matched DataType enums for each column
      */
     public PreparedTableCreate(String name, String[] columns, DataType[] dataTypes) {
         super(name);
@@ -40,8 +38,11 @@ public class PreparedTableCreate extends PreparedTable {
         text = t.toString();
     }
 
+    /**
+     * @return True if the it would be wise to run the constructor here.
+     */
     @Override
     public boolean canRun() {
-        return TableManager.tableExists(TABLE_NAME);
+        return !TableManager.tableExists(TABLE_NAME);
     }
 }
