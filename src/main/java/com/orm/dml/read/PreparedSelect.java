@@ -1,4 +1,6 @@
-package com.orm.update;
+package com.orm.dml.read;
+
+import com.orm.Prepared;
 
 public class PreparedSelect extends Prepared {
 

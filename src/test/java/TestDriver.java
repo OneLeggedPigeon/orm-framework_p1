@@ -1,14 +1,15 @@
 import com.orm.ORMLogger;
-import com.orm.update.PreparedInsert;
-import com.orm.update.PreparedTable;
+import com.orm.dml.create.PreparedInsert;
+import com.orm.ddl.PreparedTable;
 import com.orm.datatype.DataType;
-import com.orm.update.StatementManager;
+import com.orm.dml.StatementManager;
 
 public class TestDriver {
 
     public static void main(String[] args) {
         ORMLogger.ormLog.debug("Test Log:");
 
+        // TODO: add dataType enums as args for preparedInsert
         PreparedInsert ps = new PreparedInsert("dest", new String[] {"a","b","c","d"});
         System.out.println(ps);
 

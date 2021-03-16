@@ -1,4 +1,4 @@
-package com.orm.update;
+package com.orm.dml.update;
 
 class PreparedInsertTest {
 

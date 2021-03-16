@@ -1,5 +1,6 @@
-package com.orm.update;
+package com.orm.dml;
 
+import com.orm.Prepared;
 import com.orm.connection.ConnectionSession;
 
 import java.sql.Connection;

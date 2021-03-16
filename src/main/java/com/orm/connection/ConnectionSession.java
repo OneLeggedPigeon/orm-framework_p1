@@ -29,7 +29,7 @@ public class ConnectionSession implements AutoCloseable {
 
     @Override
     public void close(){
-        System.out.println("closing the session and giving connection id: " + locationIndex + " back to the connection pool");
+        ORMLogger.ormLog.debug("closing the session and giving connection id: " + locationIndex + " back to the connection pool");
         ConnectionFactory.getInstance().getConnectionPool()[locationIndex]=activeConnection;
         activeConnection = null;
         locationIndex = -1;

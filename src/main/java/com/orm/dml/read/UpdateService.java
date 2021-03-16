@@ -1,8 +1,5 @@
-package com.orm.update;
+package com.orm.dml.read;
 
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public  class UpdateService {
 

@@ -1,5 +1,6 @@
-package com.orm.update;
+package com.orm.ddl;
 
+import com.orm.Prepared;
 import com.orm.datatype.DataTypeEnums;
 import com.orm.datatype.DataType;
 
