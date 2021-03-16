@@ -1,8 +1,8 @@
-package com.orm.connection;
+package com.revature.orm.db.connection;
 
-import com.orm.ORMLogger;
-import org.apache.log4j.Logger;
-import org.apache.log4j.lf5.Log4JLogRecord;
+import com.revature.orm.ORMLogger;
+import com.revature.orm.config.Config;
+import com.revature.orm.config.DBProperties;
 
 import java.io.Closeable;
 import java.io.FileReader;
@@ -24,10 +24,8 @@ public class ConnectionFactory implements Closeable {
 
             ORMLogger.ormLog.debug("adding connection number "+i+" to the connection pool");
 
-            Properties props = new Properties();
             try {
-                props.load(new FileReader("src/main/resources/orm.config"));
-                connectionPool[i] = createConnection(props.getProperty("connection-profile"));
+                connectionPool[i] = createConnection(Config.getInstance().getPropertyByKey("connection-profile"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -49,15 +47,16 @@ public class ConnectionFactory implements Closeable {
 
     @SuppressWarnings("SameParameterValue")
     private Connection createConnection(String profile) {
-        Properties props = new Properties();
-        try {
-            props.load(new FileReader("src/main/resources/orm.properties"));
 
-            String connectionTemplate = "com.revature.orm." + profile;
+        try {
+            DBProperties props = DBProperties.getInstance();
+
+            String connectionTemplate = props.getProfile();
+            String url = props.getPropertyByKey(connectionTemplate+".url")+"?currentSchema="+props.getPropertyByKey(connectionTemplate+".schema");
             return DriverManager.getConnection(
-                    props.getProperty(connectionTemplate+".url"),
-                    props.getProperty(connectionTemplate+".username"),
-                    props.getProperty(connectionTemplate+".password"));
+                    url,
+                    props.getPropertyByKey(connectionTemplate+".username"),
+                    props.getPropertyByKey(connectionTemplate+".password"));
         } catch (IOException | SQLException e) {
             e.printStackTrace();
             return null;

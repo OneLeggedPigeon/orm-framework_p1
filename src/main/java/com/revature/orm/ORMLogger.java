@@ -1,4 +1,4 @@
-package com.orm;
+package com.revature.orm;
 
 import org.apache.log4j.Logger;
 

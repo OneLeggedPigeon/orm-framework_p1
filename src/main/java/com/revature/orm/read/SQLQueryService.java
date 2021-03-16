@@ -1,6 +1,6 @@
-package com.orm.read;
+package com.revature.orm.read;
 
-import com.orm.connection.ConnectionSession;
+import com.revature.orm.db.connection.ConnectionSession;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

@@ -1,6 +1,6 @@
-package com.orm.dml.read;
+package com.revature.orm.db.dml.read;
 
-import com.orm.Prepared;
+import com.revature.orm.db.Prepared;
 
 public class PreparedSelect extends Prepared {
 
@@ -15,5 +15,11 @@ public class PreparedSelect extends Prepared {
         t.append(columns[size - 1]).append(") ");
         t.append("FROM ").append(destination);
         text = t.toString();
+    }
+
+    @Override
+    public boolean canRun(){
+        // TODO
+        return true;
     }
 }

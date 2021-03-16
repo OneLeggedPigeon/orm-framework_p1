@@ -1,4 +1,4 @@
-package com.orm.datatype;
+package com.revature.orm.datatype;
 
 public enum DataType {
     TEXT,

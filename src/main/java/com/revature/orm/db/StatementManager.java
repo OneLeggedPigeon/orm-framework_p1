@@ -1,7 +1,6 @@
-package com.orm.dml;
+package com.revature.orm.db;
 
-import com.orm.Prepared;
-import com.orm.connection.ConnectionSession;
+import com.revature.orm.db.connection.ConnectionSession;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,9 +9,10 @@ import java.sql.PreparedStatement;
 public abstract class StatementManager {
 
     public static void runStatement(Prepared sql) {
+        if(sql.canRun())
         try (ConnectionSession ses = new ConnectionSession()) {
             Connection conn = ses.getActiveConnection();
-            PreparedStatement ps = sql.getStatement(conn);
+            PreparedStatement ps = sql.getPreparedStatement(conn);
             // add to ?
             ps.executeUpdate();
             ps.close();

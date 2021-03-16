@@ -1,10 +1,12 @@
-package com.orm.ddl;
+package com.revature.orm.db.ddl.create;
 
-import com.orm.Prepared;
-import com.orm.datatype.DataTypeEnums;
-import com.orm.datatype.DataType;
+import com.revature.orm.datatype.DataType;
+import com.revature.orm.datatype.DataTypeEnums;
+import com.revature.orm.db.ddl.PreparedTable;
+import com.revature.orm.db.ddl.TableManager;
 
-public class PreparedTable extends Prepared {
+// Holds information for a CREATE table operation
+public class PreparedTableCreate extends PreparedTable {
 
     /*
      * arguments:
@@ -22,7 +24,8 @@ public class PreparedTable extends Prepared {
      *      PRIMARY KEY (name+'_id')
      *  );
      */
-    public PreparedTable(String name, String[] columns, DataType[] dataTypes) {
+    public PreparedTableCreate(String name, String[] columns, DataType[] dataTypes) {
+        super(name);
         StringBuilder t = new StringBuilder();
         DataTypeEnums data = DataTypeEnums.getInstance();
         String pk = name+"_id";
@@ -35,5 +38,10 @@ public class PreparedTable extends Prepared {
         }
         t.append("PRIMARY KEY (").append(pk).append("))");
         text = t.toString();
+    }
+
+    @Override
+    public boolean canRun() {
+        return TableManager.tableExists(TABLE_NAME);
     }
 }

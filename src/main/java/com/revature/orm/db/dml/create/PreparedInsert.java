@@ -1,6 +1,6 @@
-package com.orm.dml.create;
+package com.revature.orm.db.dml.create;
 
-import com.orm.Prepared;
+import com.revature.orm.db.Prepared;
 
 public class PreparedInsert extends Prepared {
 
@@ -19,4 +19,11 @@ public class PreparedInsert extends Prepared {
         t.append("?)");
         text = t.toString();
     }
+
+    @Override
+    public boolean canRun(){
+        // TODO
+        return true;
+    }
+
 }
