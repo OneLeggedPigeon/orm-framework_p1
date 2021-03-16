@@ -19,6 +19,7 @@ class DBPropertiesTest {
     @AfterEach
     void tearDown() {
     }
+
     @Test
     void getInstance() {
     }
@@ -28,7 +29,7 @@ class DBPropertiesTest {
     }
 
     @Test
-    @DisplayName("Should return correct preamble")
+    @DisplayName("getProfile")
     void getProfile() throws IOException {
         assertEquals("com.revature.orm.dev",DBProperties.getInstance().getProfile());
     }

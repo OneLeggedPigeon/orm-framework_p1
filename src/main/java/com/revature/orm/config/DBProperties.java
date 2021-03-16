@@ -46,6 +46,6 @@ public class DBProperties {
     }
 
     public String getSchema(){
-        return getProfile()+".schema";
+        return getPropertyByKey(getProfile()+".schema");
     }
 }

@@ -14,8 +14,6 @@ public class ConnectionSession implements AutoCloseable {
         for(int i = 0; i< ConnectionFactory.MAX_CONNECTIONS; i++){
             Connection conn = ConnectionFactory.getInstance().getConnectionPool()[i];
             if(conn != null){
-                Logger.getLogger(ConnectionSession.class.getName()).debug("gathering connection id: " + i + " to give to the object");
-
                 ORMLogger.ormLog.debug("gathering connection id: " + i + " to give to the object");
 
                 activeConnection = conn;

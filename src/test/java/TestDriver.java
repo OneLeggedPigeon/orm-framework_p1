@@ -23,6 +23,8 @@ public class TestDriver {
         PreparedTable pt = new PreparedTableCreate("test", new String[] {"a","b","c"}, new DataType[] {DataType.BOOL,DataType.TEXT,DataType.FLOAT});
         System.out.println(pt);
 
+        //TODO: Debug pt.canRun()
+        System.out.println(pt.canRun());
         StatementManager.runStatement(pt);
     }
 }
