@@ -1,11 +1,9 @@
 package com.revature.orm.db.ddl;
 
-import com.revature.orm.config.Config;
 import com.revature.orm.config.DBProperties;
-import com.revature.orm.read.SQLQueryService;
+import com.revature.orm.db.dml.read.SQLQueryService;
 
-import java.io.IOException;
-import java.util.function.Supplier;
+import java.sql.SQLException;
 
 public abstract class TableManager {
 
@@ -13,15 +11,15 @@ public abstract class TableManager {
     // SELECT table_name FROM INFORMATION_SCHEMA.tables where table_schema like 'p_0';
     public static boolean tableExists(String table){
         // TODO
-        String schema = "";
+        String schema = DBProperties.getInstance().getPropertyByKey("");
         try {
-             schema = DBProperties.getInstance().getPropertyByKey("");
-        } catch (IOException e) {
-            e.printStackTrace();
+            SQLQueryService.query("SELECT table_name FROM INFORMATION_SCHEMA.tables WHERE table_schema LIKE '"
+                    +schema
+                    +"'")
+            .getString(table);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-        SQLQueryService.query("SELECT table_name FROM INFORMATION_SCHEMA.tables WHERE table_schema LIKE '"
-                +schema
-                +"'");
         return false;
     }
 }
