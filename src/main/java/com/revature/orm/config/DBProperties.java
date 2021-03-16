@@ -21,7 +21,7 @@ public class DBProperties {
             return Optional.ofNullable(instance).orElse(instance = new DBProperties());
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            throw new RuntimeException("Can't get an instance, check orm.properties");
         }
     }
 
@@ -42,6 +42,10 @@ public class DBProperties {
 
     // quickly return the preamble profile based on Config
     public String getProfile(){
-        return "com.revature.orm."+ Objects.requireNonNull(Config.getInstance()).getPropertyByKey("connection-profile");
+        return "com.revature.orm."+ Config.getInstance().getPropertyByKey("connection-profile");
+    }
+
+    public String getSchema(){
+        return getProfile()+".schema";
     }
 }

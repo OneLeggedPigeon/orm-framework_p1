@@ -21,7 +21,7 @@ public class Config {
             return Optional.ofNullable(instance).orElse(instance = new Config());
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            throw new RuntimeException("Can't get an instance, check orm.config");
         }
     }
 

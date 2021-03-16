@@ -1,16 +1,12 @@
 package com.revature.orm.db.connection;
 
 import com.revature.orm.ORMLogger;
-import com.revature.orm.config.Config;
 import com.revature.orm.config.DBProperties;
 
 import java.io.Closeable;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class ConnectionFactory implements Closeable {
 
@@ -23,12 +19,7 @@ public class ConnectionFactory implements Closeable {
         for(int i = 0; i< MAX_CONNECTIONS; i++){
 
             ORMLogger.ormLog.debug("adding connection number "+i+" to the connection pool");
-
-            try {
-                connectionPool[i] = createConnection(Config.getInstance().getPropertyByKey("connection-profile"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            connectionPool[i] = createConnection();
         }
         try {
             Thread.sleep(1000);
@@ -46,7 +37,7 @@ public class ConnectionFactory implements Closeable {
 
 
     @SuppressWarnings("SameParameterValue")
-    private Connection createConnection(String profile) {
+    private Connection createConnection() {
 
         try {
             DBProperties props = DBProperties.getInstance();
@@ -57,7 +48,7 @@ public class ConnectionFactory implements Closeable {
                     url,
                     props.getPropertyByKey(connectionTemplate+".username"),
                     props.getPropertyByKey(connectionTemplate+".password"));
-        } catch (IOException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
