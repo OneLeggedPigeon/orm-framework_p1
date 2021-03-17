@@ -9,15 +9,16 @@ import com.revature.orm.db.ddl.TableManager;
 public class PreparedTableCreate extends PreparedTable {
 
     /**
-     * table creation
-     *      CREATE TABLE name (
-     *      name+'_id' serial NOT NULL,
-     *      columns[0][0] columns[0][1],
-     *      columns[1][0] columns[1][1],
-     *      ...,
-     *      columns[][0] columns[][1],
-     *      PRIMARY KEY (name+'_id')
-     *  );
+     * for columns.length = n, <code>this.text</code> will be set to:
+     * <pre>"CREATE TABLE name (
+     * name+'_id' serial NOT NULL,
+     * columns[0] dataTypes[0],
+     * columns[1] dataTypes[1],
+     * ...,
+     * columns[n-1] dataTypes[n-1],
+     * PRIMARY KEY (name+'_id')
+     * )"</pre>
+     * (without newlines)
      * @param name the name of the new table
      * @param columns array of columns to add
      * @param dataTypes array of matched DataType enums for each column

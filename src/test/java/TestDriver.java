@@ -5,6 +5,7 @@ import com.revature.orm.db.ddl.PreparedTable;
 import com.revature.orm.db.ddl.create.PreparedTableCreate;
 import com.revature.orm.db.dml.create.PreparedInsert;
 import com.revature.orm.datatype.DataType;
+import javax.persistence.*;
 
 import java.time.LocalDateTime;
 
