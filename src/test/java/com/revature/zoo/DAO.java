@@ -1,12 +1,9 @@
-package com.revature.orm.dao;
+package com.revature.zoo;
 
 import java.util.List;
 import java.util.Optional;
 
-/**
- * https://www.baeldung.com/java-dao-pattern
- * @param <T> Object Type
- */
+// https://www.baeldung.com/java-dao-pattern
 public interface DAO<T> {
 
     Optional<T> get(long id);
