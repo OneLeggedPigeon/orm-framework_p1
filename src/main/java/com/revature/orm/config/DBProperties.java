@@ -8,7 +8,7 @@ import java.util.*;
 
 public class DBProperties {
 
-    private final Path PROPERTIES_FILE_LOCATION = Paths.get("src/main/resources/jpa/orm.properties");
+    private final Path PROPERTIES_FILE_LOCATION = Paths.get("src/main/resources/orm.properties");
 
     private final Map<String, String> PROPERTIES = new HashMap<>();
 

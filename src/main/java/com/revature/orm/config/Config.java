@@ -8,7 +8,7 @@ import java.util.*;
 
 public class Config {
 
-    private final Path CONFIG_FILE_LOCATION = Paths.get("src/main/resources/jpa/orm.config");
+    private final Path CONFIG_FILE_LOCATION = Paths.get("src/main/resources/orm.config");
 
     private final Map<String, String> PROPERTIES = new HashMap<>();
 
