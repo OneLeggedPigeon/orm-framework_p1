@@ -12,14 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DBPropertiesTest {
 
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     void getInstance() {
     }
@@ -32,5 +24,10 @@ class DBPropertiesTest {
     @DisplayName("getProfile")
     void getProfile() throws IOException {
         assertEquals("com.revature.orm.dev",DBProperties.getInstance().getProfile());
+    }
+
+    @Test
+    void getSchema() {
+        assertEquals("p_1",DBProperties.getInstance().getSchema());
     }
 }

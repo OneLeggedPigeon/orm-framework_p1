@@ -1,20 +1,15 @@
 package com.revature.zoo.model;
 
 // https://www.tutorialspoint.com/jpa/jpa_entity_managers.htm
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table
-public class Employee {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class Employee implements Serializable {
 
     private int eid;
+
     private String ename;
     private double salary;
     private String deg;
@@ -31,6 +26,7 @@ public class Employee {
         super();
     }
 
+    @Id
     public int getEid( ) {
         return eid;
     }
@@ -55,6 +51,7 @@ public class Employee {
         this.salary = salary;
     }
 
+    @Column(name="degree")
     public String getDeg( ) {
         return deg;
     }

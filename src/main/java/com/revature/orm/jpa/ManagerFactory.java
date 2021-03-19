@@ -6,84 +6,91 @@ import javax.persistence.metamodel.Metamodel;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RevatureEntityManagerFactory implements EntityManagerFactory {
-    private Map properties;
+public class ManagerFactory implements EntityManagerFactory {
+    private Map<String, Object> properties;
 
-    public RevatureEntityManagerFactory(){
+    private boolean closed = false;
+
+    public ManagerFactory(){
 
     }
 
-    public RevatureEntityManagerFactory(Map properties){
+    public ManagerFactory(Map<String, Object> properties){
         this.properties = properties;
     }
 
     @Override
     public EntityManager createEntityManager() {
-        return new RevatureEntityManager();
+        return new Manager(this, null, null);
     }
 
     @Override
     public EntityManager createEntityManager(Map properties) {
-        return null;
+        return new Manager(this, null, (HashMap<String, Object>)properties);
     }
 
     @Override
     public EntityManager createEntityManager(SynchronizationType synchronizationType) {
-        return null;
+        return new Manager(this, synchronizationType, null);
     }
 
     @Override
     public EntityManager createEntityManager(SynchronizationType synchronizationType, Map properties) {
-        return null;
-    }
-
-    @Override
-    public CriteriaBuilder getCriteriaBuilder() {
-        return null;
-    }
-
-    @Override
-    public Metamodel getMetamodel() {
-        return null;
-    }
-
-    @Override
-    public boolean isOpen() {
-        return false;
-    }
-
-    @Override
-    public void close() {
-
+        return new Manager(this, synchronizationType, (HashMap<String, Object>)properties);
     }
 
     @Override
     public Map<String, Object> getProperties() {
-        return properties;
+        if (properties != null){
+            return properties;
+        } else {
+            return new HashMap<String, Object>();
+        }
+    }
+
+    @Override
+    public CriteriaBuilder getCriteriaBuilder() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Metamodel getMetamodel() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isOpen() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void close() {
+        //TODO implememnt
+        closed = true;
     }
 
     @Override
     public Cache getCache() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public PersistenceUnitUtil getPersistenceUnitUtil() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void addNamedQuery(String s, Query query) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public <T> T unwrap(Class<T> aClass) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public <T> void addNamedEntityGraph(String s, EntityGraph<T> entityGraph) {
-
+        throw new UnsupportedOperationException();
     }
 }

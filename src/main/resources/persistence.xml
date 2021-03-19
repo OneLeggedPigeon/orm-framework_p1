@@ -7,7 +7,7 @@
 
     <persistence-unit name="Revature_ORM">
 
-        <provider>com.revature.orm.jpa.RevaturePersistenceProvider</provider>
+        <provider>com.revature.orm.jpa.Provider</provider>
 
         <class>com.revature.zoo.model.Employee</class>
 

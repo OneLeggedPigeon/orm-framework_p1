@@ -1,3 +1,7 @@
-/orm-framework_p1.iml
-/.idea/
-/src/main/resources/log/
+**/.idea/*
+**/target/*
+**/.vscode/*
+**/metadata/*
+**/*.iml
+**/*.iws
+**/log/

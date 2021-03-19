@@ -6,7 +6,7 @@
    http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
                  version="1.0">
 
-    <description> XML Mapping file</description>
+    <description>XML Mapping file</description>
 
     <entity class="Employee">
         <table name="EMPLOYEETABLE"/>

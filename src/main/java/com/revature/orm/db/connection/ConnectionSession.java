@@ -1,7 +1,6 @@
 package com.revature.orm.db.connection;
 
 import com.revature.orm.ORMLogger;
-import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 

@@ -4,15 +4,14 @@ import com.revature.zoo.model.Employee;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
-import com.revature.orm.jpa.RevaturePersistenceProvider;
+import com.revature.orm.jpa.Provider;
 
 //https://www.tutorialspoint.com/jpa/jpa_entity_managers.htm
 public class CreateEmployee {
 
     public static void main( String[ ] args ) {
-        EntityManagerFactory emFactory = RevaturePersistenceProvider.getInstance().createEntityManagerFactory();
+        EntityManagerFactory emFactory = Provider.getInstance().createContainerEntityManagerFactory();
 
         EntityManager entitymanager = emFactory.createEntityManager( );
         entitymanager.getTransaction( ).begin( );
