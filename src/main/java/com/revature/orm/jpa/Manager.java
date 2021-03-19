@@ -366,6 +366,7 @@ public class Manager implements EntityManager {
      * Read in based on Class annotations and part of a <code>Manager</code>'s persistence context, formatted for use in CRUD operations.
      * <p>The middleman between the POJO and the database row</p>
      */
+    //TODO change this to a template where I use the Object instance as a key in a map, so multiple keys can refer to one of this to save memory
     private class ORMEntity implements Serializable {
         public ArrayList<Col> columns = new ArrayList<>();
         public Object instance;
