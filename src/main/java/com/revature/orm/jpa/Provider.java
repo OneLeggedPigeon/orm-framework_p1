@@ -9,7 +9,8 @@ import java.util.Map;
 public class Provider implements PersistenceProvider {
     private static Provider instance;
 
-    private Provider(){}
+    private Provider(){
+    }
 
     public static Provider getInstance(){
         if (instance == null){
@@ -25,11 +26,7 @@ public class Provider implements PersistenceProvider {
 
     @Override
     public EntityManagerFactory createContainerEntityManagerFactory(PersistenceUnitInfo persistenceUnitInfo, Map properties) {
-        if (properties == null){
-            return new ManagerFactory();
-        } else {
-            return new ManagerFactory(properties);
-        }
+        return new ManagerFactory(properties);
     }
 
     @Override

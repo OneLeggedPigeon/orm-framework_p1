@@ -1,6 +1,5 @@
 package com.revature.orm.db.ddl;
 
-import com.revature.orm.ORMLogger;
 import com.revature.orm.config.DBProperties;
 import com.revature.orm.db.dml.read.SQLQueryService;
 

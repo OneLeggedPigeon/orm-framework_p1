@@ -4,7 +4,7 @@ package com.revature.orm.datatype;
 import java.util.EnumMap;
 
 public class DataTypeEnums {
-    private final EnumMap<DataType,String> pgDataTypes = new EnumMap<DataType,String>(DataType.class);
+    private final EnumMap<DataType,String> pgDataTypes = new EnumMap<>(DataType.class);
 
     private static DataTypeEnums instance;
 

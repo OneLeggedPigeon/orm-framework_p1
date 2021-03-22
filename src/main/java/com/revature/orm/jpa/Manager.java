@@ -1,7 +1,5 @@
 package com.revature.orm.jpa;
 
-import com.revature.orm.config.DBProperties;
-
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -9,7 +7,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.metamodel.Metamodel;
 import java.io.Serializable;
-import java.lang.reflect.*;
 import java.util.*;
 
 public class Manager implements EntityManager {
@@ -17,14 +14,16 @@ public class Manager implements EntityManager {
     private Transaction transaction;
     private final EntityManagerFactory factory;
     private final SynchronizationType sync;
+    private final HashMap<Class<?>,EntityTemplate> entityTemplates;
 
-    private HashMap<Object,ORMEntity> context =  new HashMap<>();
+    private final HashMap<Object,EntityTemplate> context =  new HashMap<>();
     private boolean closed = false;
 
-    public Manager(EntityManagerFactory factory, SynchronizationType synchronizationType, HashMap<String, Object> properties){
+    public Manager(EntityManagerFactory factory, HashMap<Class<?>,EntityTemplate> templates, SynchronizationType synchronizationType, HashMap<String, Object> properties){
         this.factory = factory;
         this.properties = properties;
         sync = synchronizationType;
+        entityTemplates = templates;
     }
 
     /**
@@ -40,62 +39,12 @@ public class Manager implements EntityManager {
 
         if(!(pojo instanceof Serializable) || clazz.getFields().length > 0) throw new RuntimeException(clazz+" does not follow the JavaBean standard");
 
-        if(!clazz.isAnnotationPresent(Entity.class)) throw new IllegalArgumentException("Can't persist a non-entity");
+        EntityTemplate template = entityTemplates.get(clazz);
 
-        // TODO: only read annotations once per class, not once per object
-        ORMEntity entity = new ORMEntity();
-        entity.instance = pojo;
+        if(!clazz.isAnnotationPresent(Entity.class)) throw new IllegalArgumentException(clazz+" is not an @Entity and cannot be persisted");
+        if(template == null) throw new RuntimeException("Something went wrong with the entity template loader");
 
-        /*
-         * find all the public getFoo() Methods (including inherited), but also find the fields 'foo' with annotations that match public 'getFoo()'
-         */
-        ArrayList<Method> methods = new ArrayList<>(Arrays.asList(clazz.getMethods()));
-        Field[] fields = clazz.getDeclaredFields();
-        // find all the getFoo methods
-        ArrayList<Col> cols = new ArrayList<>();
-
-        HashMap<String, Method> getters = new HashMap<>();
-        HashMap<String, Method> setters = new HashMap<>();
-        for (Method method : methods) {
-            String methodName = method.getName();
-            if (methodName.startsWith("set") && methodName.length() > 3) {
-                setters.put(method.getName(), Objects.requireNonNull(method));
-            } else if (!methodName.equals("getClass") && methodName.startsWith("get") && methodName.length() > 3) {
-                getters.put(method.getName(), Objects.requireNonNull(method));
-            }
-        }
-
-        getters.forEach((getterName,getterMethod) -> {
-            String column = getterName.substring(3,4).toLowerCase().concat(getterName.substring(4));
-            String setterName = "set"+column.substring(0,1).toUpperCase().concat(column.substring(1));
-            Method setterMethod = setters.get(setterName);
-            // check if there is a defined column name in the annotations
-            if (getterMethod.getDeclaredAnnotation(Column.class) != null &&
-                    !getterMethod.getDeclaredAnnotation(Column.class).name().isEmpty()){
-                column = getterMethod.getDeclaredAnnotation(Column.class).name();
-            } else if (setterMethod != null &&
-                    setterMethod.getDeclaredAnnotation(Column.class) != null &&
-                    !setterMethod.getDeclaredAnnotation(Column.class).name().isEmpty()){
-                column = setterMethod.getDeclaredAnnotation(Column.class).name();
-            }
-            entity.columns.add(new Col(column, getterMethod, setterMethod));
-        });
-
-        Table ann = clazz.getAnnotation(Table.class);
-        if(ann == null || ann.name().isEmpty()){
-            // default
-            entity.table = clazz.getName().substring(clazz.getName().lastIndexOf(".")+1);
-        } else {
-            entity.table = ann.name();
-        }
-        if(ann == null || ann.schema().isEmpty()){
-            // default
-            entity.schema = DBProperties.getInstance().getSchema();
-        } else {
-            entity.schema = ann.schema();
-        }
-
-        context.put(pojo, entity);
+        context.put(pojo, template);
     }
 
     @Override
@@ -125,7 +74,7 @@ public class Manager implements EntityManager {
         if (properties != null){
             return properties;
         } else {
-            return new HashMap<String, Object>();
+            return new HashMap<>();
         }
     }
 
@@ -360,59 +309,5 @@ public class Manager implements EntityManager {
     @Override
     public <T> List<EntityGraph<? super T>> getEntityGraphs(Class<T> aClass) {
         throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Read in based on Class annotations and part of a <code>Manager</code>'s persistence context, formatted for use in CRUD operations.
-     * <p>The middleman between the POJO and the database row</p>
-     */
-    //TODO change this to a template where I use the Object instance as a key in a map, so multiple keys can refer to one of this to save memory
-    private class ORMEntity implements Serializable {
-        public ArrayList<Col> columns = new ArrayList<>();
-        public Object instance;
-        public String table;
-        public String schema;
-    }
-
-    /**
-     * Modified from
-     * <url>https://stackoverflow.com/questions/521171/a-java-collection-of-value-pairs-tuples</url>
-     * @author Dave Jarvis
-     */
-    private class Col implements Serializable {
-
-        private final String name;
-        private final Method getter;
-        private final Method setter;
-        private final Class<?> dataType;
-
-        public Col(String name, Method getter, Method setter) {
-            assert name != null;
-            assert getter != null;
-            assert setter != null;
-
-            this.name = name;
-            this.getter = getter;
-            this.setter = setter;
-            this.dataType = getter.getReturnType();
-        }
-
-        public String getName() { return name; }
-        public Object getGetter() { return getter; }
-        public Method getSetter() { return setter; }
-        public Class<?> getDataType() { return dataType; }
-
-        @Override
-        public int hashCode() { return name.hashCode() ^ getter.hashCode() ^ setter.hashCode(); }
-
-        @Override
-        public boolean equals(Object o) {
-            if (!(o instanceof Col)) return false;
-            Col col = (Col) o;
-            return this.name.equals(col.getName()) &&
-                    this.getter.equals(col.getGetter()) &&
-                    this.setter.equals(col.getSetter());
-        }
-
     }
 }
