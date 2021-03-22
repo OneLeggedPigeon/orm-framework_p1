@@ -1,4 +1,7 @@
 package com.revature.zoo.model;
 
-public class Gorilla {
+import javax.persistence.Entity;
+
+@Entity
+public class Gorilla extends Animal {
 }

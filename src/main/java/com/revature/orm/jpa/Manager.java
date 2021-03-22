@@ -45,16 +45,18 @@ public class Manager implements EntityManager {
         if(template == null) throw new RuntimeException("Something went wrong with the entity template loader");
 
         context.put(pojo, template);
+
+        ((Transaction) getTransaction()).add((Serializable) pojo, template, ContextType.PERSIST);
+    }
+
+    @Override
+    public void remove(Object pojo) {
+//        ((Transaction) getTransaction()).add(StatementManager.generateSqlRemove(pojo, template));
     }
 
     @Override
     public <T> T merge(T t) {
-        return null;
-    }
-
-    @Override
-    public void remove(Object o) {
-
+        throw new UnsupportedOperationException();
     }
 
     /**

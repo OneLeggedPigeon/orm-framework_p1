@@ -1,7 +1,6 @@
-package com.revature.orm.db.dml.read;
+package com.revature.orm.db.dml;
 
-import com.revature.orm.ORMLogger;
-import com.revature.orm.db.connection.ConnectionSession;
+import com.revature.orm.OrmLogger;
 
 import java.sql.*;
 
@@ -23,13 +22,12 @@ public abstract class SQLQueryService {
      * method has been exceeded and has at least attempted to cancel
      * the currently running {@code Statement}
      */
-    public static ResultSet query(String statement) throws SQLException {
-        try (ConnectionSession ses = new ConnectionSession()) {
-            Connection conn = ses.getActiveConnection();
+    public static ResultSet query(Connection conn, String statement) throws SQLException {
+        try {
             Statement stmt = conn.createStatement();
             return stmt.executeQuery(statement);
         } catch (SQLException e) {
-            ORMLogger.ormLog.debug("Failed Query: "+statement);
+            OrmLogger.ormLog.debug("Failed Query: "+statement);
             throw e;
         }
     }

@@ -1,20 +1,30 @@
 package com.revature.orm.datatype;
 
 
+import java.sql.SQLType;
+import java.sql.Types;
 import java.util.EnumMap;
+import java.util.HashMap;
 
 public class DataTypeEnums {
-    private final EnumMap<DataType,String> pgDataTypes = new EnumMap<>(DataType.class);
+    private final HashMap<Class<?>, Integer> javaToDataType = new HashMap<>();
+    private final HashMap<Integer,String> pgDataTypes = new HashMap<>();
 
     private static DataTypeEnums instance;
 
     // currently set for postgresql
     private DataTypeEnums() {
-        pgDataTypes.put(DataType.TEXT,"text");
-        pgDataTypes.put(DataType.BOOL,"bool");
-        pgDataTypes.put(DataType.INT,"int4");
-        pgDataTypes.put(DataType.FLOAT,"float8");
-        pgDataTypes.put(DataType.SERIAL,"serial");
+        javaToDataType.put(int.class, Types.INTEGER);
+        javaToDataType.put(float.class, Types.FLOAT);
+        javaToDataType.put(double.class, Types.DOUBLE);
+        javaToDataType.put(String.class, Types.VARCHAR);
+        javaToDataType.put(boolean.class, Types.BOOLEAN);
+
+        pgDataTypes.put(Types.VARCHAR,"varchar");
+        pgDataTypes.put(Types.BOOLEAN,"bool");
+        pgDataTypes.put(Types.INTEGER,"int4");
+        pgDataTypes.put(Types.FLOAT,"float4");
+        pgDataTypes.put(Types.DOUBLE,"float8");
     }
 
     public static DataTypeEnums getInstance(){
@@ -22,7 +32,14 @@ public class DataTypeEnums {
         return instance;
     }
 
-    public String getDataType(DataType e){
-        return pgDataTypes.get(e);
+    public String getDataTypeString(int type){
+        return pgDataTypes.get(type);
+    }
+    public String getDataTypeString(Class<?> javaType){
+        return pgDataTypes.get(javaToDataType.get(javaType));
+    }
+
+    public int getDataTypeIndex(Class<?> javaType) {
+        return javaToDataType.get(javaType);
     }
 }

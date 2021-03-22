@@ -1,5 +1,6 @@
 package com.revature.zoo.service;
 
+import com.revature.orm.config.PersistenceConfig;
 import com.revature.zoo.model.Employee;
 
 import javax.persistence.EntityManager;
@@ -11,18 +12,32 @@ import com.revature.orm.jpa.Provider;
 public class CreateEmployee {
 
     public static void main( String[ ] args ) {
-        EntityManagerFactory emFactory = Provider.getInstance().createContainerEntityManagerFactory();
+        EntityManagerFactory emFactory = Provider.getInstance().createContainerEntityManagerFactory(PersistenceConfig.getInstance().getPROPERTIES());
 
         EntityManager entitymanager = emFactory.createEntityManager( );
         entitymanager.getTransaction( ).begin( );
 
-        Employee employee = new Employee( );
-        employee.setEid( 1201 );
-        employee.setEname( "Gopal" );
-        employee.setSalary( 40000 );
-        employee.setDeg( "Technical Manager" );
+        Employee employee0 = new Employee( );
+        employee0.setEid( 1 );
+        employee0.setEname( "Gopal0" );
+        employee0.setSalary( 40000 );
+        employee0.setDeg( "Technical Manager" );
 
-        entitymanager.persist( employee );
+        Employee employee1 = new Employee( );
+        employee1.setEid( 2 );
+        employee1.setEname( "Gopal1" );
+        employee1.setSalary( 40000 );
+        employee1.setDeg( "Technical Manager" );
+
+        Employee employee2 = new Employee( );
+        employee2.setEid( 3 );
+        employee2.setEname( "Gopal2" );
+        employee2.setSalary( 40000 );
+        employee2.setDeg( "Technical Manager" );
+
+        entitymanager.persist( employee0 );
+        entitymanager.persist( employee1 );
+        entitymanager.persist( employee2 );
         entitymanager.getTransaction( ).commit( );
 
         entitymanager.close( );

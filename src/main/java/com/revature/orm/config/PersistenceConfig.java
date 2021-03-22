@@ -6,22 +6,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class Config {
+public class PersistenceConfig {
 
-    private final Path CONFIG_FILE_LOCATION = Paths.get("src/main/resources/orm.config");
+    private final Path CONFIG_FILE_LOCATION = Paths.get("src/main/resources/orm.persistence.config");
+
+    public Map<String, String> getPROPERTIES() {
+        return PROPERTIES;
+    }
 
     private final Map<String, String> PROPERTIES = new HashMap<>();
 
-    private Config() throws IOException {getProperties();}
+    private PersistenceConfig() throws IOException {getProperties();}
 
-    private static Config instance;
+    private static PersistenceConfig instance;
 
-    public static Config getInstance(){
+    public static PersistenceConfig getInstance(){
         try {
-            return Optional.ofNullable(instance).orElse(instance = new Config());
+            return Optional.ofNullable(instance).orElse(instance = new PersistenceConfig());
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Can't get an instance, check orm.config");
+            throw new RuntimeException("Can't get an instance, check orm.persistence.config");
         }
     }
 

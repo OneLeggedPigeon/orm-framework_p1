@@ -1,6 +1,6 @@
 package com.revature.orm.db.connection;
 
-import com.revature.orm.ORMLogger;
+import com.revature.orm.OrmLogger;
 
 import java.sql.Connection;
 
@@ -13,7 +13,7 @@ public class ConnectionSession implements AutoCloseable {
         for(int i = 0; i< ConnectionFactory.MAX_CONNECTIONS; i++){
             Connection conn = ConnectionFactory.getInstance().getConnectionPool()[i];
             if(conn != null){
-                ORMLogger.ormLog.debug("gathering connection id: " + i + " to give to the object");
+                OrmLogger.ormLog.debug("gathering connection id: " + i + " to give to the object");
 
                 activeConnection = conn;
                 ConnectionFactory.getInstance().getConnectionPool()[i] = null;
@@ -26,7 +26,7 @@ public class ConnectionSession implements AutoCloseable {
 
     @Override
     public void close(){
-        ORMLogger.ormLog.debug("closing the session and giving connection id: " + locationIndex + " back to the connection pool");
+        OrmLogger.ormLog.debug("closing the session and giving connection id: " + locationIndex + " back to the connection pool");
         ConnectionFactory.getInstance().getConnectionPool()[locationIndex]=activeConnection;
         activeConnection = null;
         locationIndex = -1;

@@ -5,13 +5,17 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table
+@Table(name = "test", schema = "p_1")
 public class Employee implements Serializable {
 
+    @Id
+    @Column(name="employee_id")
     private int eid;
 
+    @Column(name="name")
     private String ename;
     private double salary;
+    @Column(name="degree")
     private String deg;
 
     public Employee(int eid, String ename, double salary, String deg) {
@@ -26,7 +30,6 @@ public class Employee implements Serializable {
         super();
     }
 
-    @Id
     public int getEid( ) {
         return eid;
     }
@@ -51,7 +54,6 @@ public class Employee implements Serializable {
         this.salary = salary;
     }
 
-    @Column(name="degree")
     public String getDeg( ) {
         return deg;
     }

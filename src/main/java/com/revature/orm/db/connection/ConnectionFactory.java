@@ -1,7 +1,7 @@
 package com.revature.orm.db.connection;
 
-import com.revature.orm.ORMLogger;
-import com.revature.orm.config.DBProperties;
+import com.revature.orm.OrmLogger;
+import com.revature.orm.config.DatabaseProperties;
 
 import java.io.Closeable;
 import java.sql.Connection;
@@ -18,7 +18,7 @@ public class ConnectionFactory implements Closeable {
     private ConnectionFactory() {
         for(int i = 0; i< MAX_CONNECTIONS; i++){
 
-            ORMLogger.ormLog.debug("adding connection number "+i+" to the connection pool");
+            OrmLogger.ormLog.debug("adding connection number "+i+" to the connection pool");
             connectionPool[i] = createConnection();
         }
         try {
@@ -40,9 +40,10 @@ public class ConnectionFactory implements Closeable {
     private Connection createConnection() {
 
         try {
-            DBProperties props = DBProperties.getInstance();
+            DatabaseProperties props = DatabaseProperties.getInstance();
 
             String connectionTemplate = props.getProfile();
+            //TODO check if I can remove the schema specification here
             String url = props.getPropertyByKey(connectionTemplate+".url")+"?currentSchema="+props.getPropertyByKey(connectionTemplate+".schema");
             return DriverManager.getConnection(
                     url,

@@ -6,22 +6,22 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class DBProperties {
+public class DatabaseProperties {
 
-    private final Path PROPERTIES_FILE_LOCATION = Paths.get("src/main/resources/orm.properties");
+    private final Path PROPERTIES_FILE_LOCATION = Paths.get("src/main/resources/orm.database.properties");
 
     private final Map<String, String> PROPERTIES = new HashMap<>();
 
-    private DBProperties() throws IOException {getProperties();}
+    private DatabaseProperties() throws IOException {getProperties();}
 
-    private static DBProperties instance;
+    private static DatabaseProperties instance;
 
-    public static DBProperties getInstance(){
+    public static DatabaseProperties getInstance(){
         try {
-            return Optional.ofNullable(instance).orElse(instance = new DBProperties());
+            return Optional.ofNullable(instance).orElse(instance = new DatabaseProperties());
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Can't get an instance, check orm.properties");
+            throw new RuntimeException("Can't get an instance, check orm.database.properties");
         }
     }
 
@@ -42,7 +42,7 @@ public class DBProperties {
 
     // quickly return the preamble profile based on Config
     public String getProfile(){
-        return "com.revature.orm."+ Config.getInstance().getPropertyByKey("connection-profile");
+        return "com.revature.orm";
     }
 
     public String getSchema(){
