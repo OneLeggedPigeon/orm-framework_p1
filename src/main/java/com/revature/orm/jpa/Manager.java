@@ -1,5 +1,9 @@
 package com.revature.orm.jpa;
 
+import com.revature.orm.OrmLogger;
+import com.revature.orm.db.connection.ConnectionSession;
+import com.revature.orm.db.dml.SQLQueryService;
+
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -7,6 +11,12 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.metamodel.Metamodel;
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class Manager implements EntityManager {
@@ -103,11 +113,50 @@ public class Manager implements EntityManager {
     }
 
     /**
-     * Functionality already provided by <code>persist()</code>ing a class with a set @Id that matches the primary key from a row in the matching table
+     *
+     * @param aClass Class Type
+     * @param o Primary Key
+     * @param <T> Class Type
+     * @return and instance of the class with values taken from the matching database entry, or null if no such object exists
      */
     @Override
     public <T> T find(Class<T> aClass, Object o) {
-        throw new UnsupportedOperationException();
+        T result = null;
+        for(Constructor<?> c : aClass.getConstructors()){
+            if (c.getParameterCount() == 0){
+                try {
+                    result = (T) c.newInstance();
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
+        if(result == null) {
+            OrmLogger.ormLog.debug("Could not reflect constructor for "+aClass);
+            return null;
+        }
+        try {
+            EntityTemplate template = entityTemplates.get(aClass);
+            Connection conn = new ConnectionSession().getActiveConnection();
+            PreparedStatement ps = conn.prepareStatement(template.getStatements(ContextType.READ).get(0).toString());
+            ps.setInt(1,(Integer) o);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                template.getIdColumn().getSetter().invoke(result, rs.getInt(template.getIdColumn().getName()));
+                for(EntityTemplate.Col column : template.getColumns()){
+                    column.getSetter().invoke(result, rs.getObject(column.getName()));
+                }
+            } else {
+                throw new SQLException("Row Data wasn't present for "+aClass+" | "+o);
+            }
+            conn.close();
+        } catch (SQLException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            OrmLogger.ormLog.debug("Problem while finding "+aClass+" | "+o);
+            return null;
+        }
+        return result;
     }
 
     @Override

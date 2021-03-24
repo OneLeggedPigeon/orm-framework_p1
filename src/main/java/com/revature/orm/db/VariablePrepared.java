@@ -1,10 +1,7 @@
 package com.revature.orm.db;
 
 import com.revature.orm.db.ddl.PreparedTableCreate;
-import com.revature.orm.db.dml.PreparedInsert;
-import com.revature.orm.db.dml.PreparedDelete;
-import com.revature.orm.db.dml.PreparedSelectAll;
-import com.revature.orm.db.dml.PreparedUpdate;
+import com.revature.orm.db.dml.*;
 import com.revature.orm.jpa.ContextType;
 import com.revature.orm.jpa.EntityTemplate;
 
@@ -27,7 +24,7 @@ public class VariablePrepared {
         // generate CREATE TABLE
         persistStatements.add(new PreparedTableCreate(template));
         // generate ALTER TABLE
-            // persistStatements.add(new PreparedTableAlter(template));
+//        persistStatements.add(new PreparedTableAlter(template));
         // generate UPDATE
         persistStatements.add(new PreparedUpdate(template));
         // generate INSERT
@@ -36,10 +33,10 @@ public class VariablePrepared {
         // generate DELETE
         removeStatements.add(new PreparedDelete(template));
         // READ
+        // generate SELECT ROWS BY Id
+        readStatements.add(new PreparedSelectById(template));
         // generate SELECT ROWS
-        readStatements.add(new PreparedSelectAll(template));
-        // generate SELECT TABLES
-            // readStatements.add(new PreparedTableSelect(template));
+//        readStatements.add(new PreparedSelectAll(template));
     }
 
     public boolean canRun() {
