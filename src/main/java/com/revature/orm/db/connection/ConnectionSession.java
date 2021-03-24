@@ -1,7 +1,5 @@
 package com.revature.orm.db.connection;
 
-import com.revature.orm.OrmLogger;
-
 import java.sql.Connection;
 
 public class ConnectionSession implements AutoCloseable {

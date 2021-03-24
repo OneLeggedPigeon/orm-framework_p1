@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PreparedTest {
-    private static EntityTemplate e1 = new EntityTemplate("testTable","testSchema");
-    private static EntityTemplate e2 = new EntityTemplate("testTable","testSchema");
-    private static EntityTemplate e3 = new EntityTemplate("testTable","testSchema");
+    private static final EntityTemplate e1 = new EntityTemplate("testTable","testSchema");
+    private static final EntityTemplate e2 = new EntityTemplate("testTable","testSchema");
+    private static final EntityTemplate e3 = new EntityTemplate("testTable","testSchema");
 
     @BeforeAll
     static void beforeAll() {

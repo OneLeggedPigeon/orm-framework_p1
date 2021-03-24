@@ -1,6 +1,5 @@
 package com.revature.orm.db.connection;
 
-import com.revature.orm.OrmLogger;
 import com.revature.orm.config.DatabaseProperties;
 
 import java.io.Closeable;

@@ -39,10 +39,6 @@ public class VariablePrepared {
 //        readStatements.add(new PreparedSelectAll(template));
     }
 
-    public boolean canRun() {
-        return false;
-    }
-
     public ArrayList<Prepared> getStatements(ContextType type) {
         switch(type){
             case PERSIST:

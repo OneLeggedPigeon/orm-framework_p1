@@ -1,6 +1,5 @@
 package com.revature.orm.db.ddl;
 
-import com.revature.orm.OrmLogger;
 import com.revature.orm.datatype.DataTypeEnums;
 import com.revature.orm.db.Prepared;
 import com.revature.orm.jpa.EntityTemplate;

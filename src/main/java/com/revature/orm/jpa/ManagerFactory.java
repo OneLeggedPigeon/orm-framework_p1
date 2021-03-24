@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@SuppressWarnings("unchecked")
 public class ManagerFactory implements EntityManagerFactory {
     private final Map<String, Object> properties;
 
@@ -23,7 +24,7 @@ public class ManagerFactory implements EntityManagerFactory {
     private final HashMap<Class<?>,EntityTemplate> entityTemplates= new HashMap<>();
 
     public ManagerFactory(){
-        this(new HashMap<String, Object>());
+        this(new HashMap<>());
     }
 
     public ManagerFactory(Map<String, Object> properties){
@@ -220,7 +221,7 @@ public class ManagerFactory implements EntityManagerFactory {
     /**
      * add the sql statements to a <code>EntityTemplate</code> in a separate thread
      */
-    private class SqlRunnable implements Runnable {
+    private static class SqlRunnable implements Runnable {
         private final EntityTemplate template;
 
         public SqlRunnable(EntityTemplate template){

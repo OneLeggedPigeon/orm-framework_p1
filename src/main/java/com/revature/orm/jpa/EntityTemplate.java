@@ -3,10 +3,8 @@ package com.revature.orm.jpa;
 import com.revature.orm.datatype.DataTypeEnums;
 import com.revature.orm.db.Prepared;
 import com.revature.orm.db.VariablePrepared;
-import com.revature.orm.db.dml.PreparedSelectAll;
 
 import java.lang.reflect.Method;
-import java.sql.Types;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +25,7 @@ public class EntityTemplate {
         this.schema = schema;
     }
 
+    @SuppressWarnings("BusyWait")
     public ArrayList<Prepared> getStatements(ContextType type){
         // Busy wait in case the thread assigning this needs a few more milliseconds, max 3 seconds
         int waitTime = 0;

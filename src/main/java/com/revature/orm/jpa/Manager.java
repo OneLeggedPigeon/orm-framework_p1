@@ -2,7 +2,6 @@ package com.revature.orm.jpa;
 
 import com.revature.orm.OrmLogger;
 import com.revature.orm.db.connection.ConnectionSession;
-import com.revature.orm.db.dml.SQLQueryService;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,6 +21,7 @@ public class Manager implements EntityManager {
     private final HashMap<String, Object> properties;
     private Transaction transaction;
     private final EntityManagerFactory factory;
+    @SuppressWarnings("FieldCanBeLocal")
     private final SynchronizationType sync;
     // Association between classes and EntityTemplates, used for generating context
     private final HashMap<Class<?>,EntityTemplate> entityTemplates;
@@ -118,6 +118,7 @@ public class Manager implements EntityManager {
      * @param <T> Class Type
      * @return and instance of the class with values taken from the matching database entry, or null if no such object exists
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T find(Class<T> aClass, Object o) {
         T result = null;

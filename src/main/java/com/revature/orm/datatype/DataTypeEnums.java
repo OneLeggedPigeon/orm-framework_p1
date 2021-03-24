@@ -1,9 +1,7 @@
 package com.revature.orm.datatype;
 
 
-import java.sql.SQLType;
 import java.sql.Types;
-import java.util.EnumMap;
 import java.util.HashMap;
 
 public class DataTypeEnums {

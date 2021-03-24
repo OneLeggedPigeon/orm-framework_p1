@@ -25,7 +25,7 @@ public class Transaction implements EntityTransaction {
     private final HashMap<Object, ContextType> types = new HashMap<>();
     private final Manager manager;
 
-    private ExecutorService thread = Executors.newSingleThreadExecutor();
+    private final ExecutorService thread = Executors.newSingleThreadExecutor();
 
     Transaction(Manager manager){
         this.manager = manager;

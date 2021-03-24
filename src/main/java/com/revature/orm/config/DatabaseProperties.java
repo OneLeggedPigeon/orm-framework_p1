@@ -41,6 +41,7 @@ public class DatabaseProperties {
     }
 
     // quickly return the preamble profile based on Config
+    @SuppressWarnings("SameReturnValue")
     public String getProfile(){
         return "com.revature.orm";
     }

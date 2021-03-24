@@ -1,6 +1,5 @@
 package com.revature.zoo.service;
 
-import com.revature.orm.config.PersistenceConfig;
 import com.revature.zoo.model.Employee;
 
 import javax.persistence.EntityManager;
@@ -43,6 +42,4 @@ public class CreateEmployee {
         entitymanager.close( );
         emFactory.close( );
     }
-    // Should create a table 'employee'
-    // with columns 'Eid' 'Ename' 'Salary' 'Deg'
 }

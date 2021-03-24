@@ -9,6 +9,7 @@ import javax.persistence.spi.ProviderUtil;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("rawtypes")
 public class Provider implements PersistenceProvider{
     private static Provider instance;
 
@@ -38,9 +39,15 @@ public class Provider implements PersistenceProvider{
         return createContainerEntityManagerFactory(null, properties);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public EntityManagerFactory createContainerEntityManagerFactory(PersistenceUnitInfo persistenceUnitInfo, Map properties) {
-        return new ManagerFactory(properties);
+        try{
+            return new ManagerFactory(properties);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ManagerFactory();
+        }
     }
 
     @Override
