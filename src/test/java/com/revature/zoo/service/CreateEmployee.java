@@ -12,14 +12,15 @@ import com.revature.orm.jpa.Provider;
 public class CreateEmployee {
 
     public static void main( String[ ] args ) {
-        EntityManagerFactory emFactory = Provider.getInstance().createContainerEntityManagerFactory(PersistenceConfig.getInstance().getPROPERTIES());
+        //EntityManagerFactory emFactory = Provider.getInstance().createContainerEntityManagerFactory(PersistenceConfig.getInstance().getPROPERTIES());
+        EntityManagerFactory emFactory = Provider.getInstance().createContainerEntityManagerFactory("com.revature.zoo");
 
         EntityManager entitymanager = emFactory.createEntityManager( );
         entitymanager.getTransaction( ).begin( );
 
         Employee employee0 = new Employee( );
         employee0.setEname( "Gopal0" );
-        employee0.setSalary( 40000 );
+        employee0.setSalary( 43200 );
         employee0.setDeg( "Technical Manager" );
 
         Employee employee1 = new Employee( );
@@ -28,16 +29,13 @@ public class CreateEmployee {
         employee1.setDeg( "Technical Manager" );
 
         Employee employee2 = new Employee( );
-        employee2.setEid( 2 );
         employee2.setEname( "Gopal2" );
         employee2.setSalary( 40000 );
         employee2.setDeg( "Technical Manager" );
 
-        entitymanager.remove( employee0 );
-        entitymanager.persist( employee1 );
-        entitymanager.remove( employee1 );
-        entitymanager.remove( employee2 );
         entitymanager.persist( employee0 );
+        entitymanager.persist( employee1 );
+        entitymanager.persist( employee2 );
 
         System.out.println(entitymanager.find(Employee.class, 5));
         entitymanager.getTransaction( ).commit( );

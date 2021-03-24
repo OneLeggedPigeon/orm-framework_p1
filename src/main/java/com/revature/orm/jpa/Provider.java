@@ -6,6 +6,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.spi.PersistenceProvider;
 import javax.persistence.spi.PersistenceUnitInfo;
 import javax.persistence.spi.ProviderUtil;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Provider implements PersistenceProvider{
@@ -25,6 +26,12 @@ public class Provider implements PersistenceProvider{
 
     public EntityManagerFactory createContainerEntityManagerFactory() {
         return createContainerEntityManagerFactory(null, null);
+    }
+
+    public EntityManagerFactory createContainerEntityManagerFactory(String pkg) {
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("entity-package-root",pkg);
+        return createContainerEntityManagerFactory(null, map);
     }
 
     public EntityManagerFactory createContainerEntityManagerFactory(Map properties) {

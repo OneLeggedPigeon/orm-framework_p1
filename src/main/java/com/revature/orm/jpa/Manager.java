@@ -10,7 +10,6 @@ import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.metamodel.Metamodel;
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
@@ -341,9 +340,7 @@ public class Manager implements EntityManager {
 
     @Override
     public void close() {
-        //TODO implememnt
-
-        // once the transaciton is complete
+        transaction.shutDown();
         closed = true;
     }
 
