@@ -77,21 +77,25 @@ public class Transaction implements EntityTransaction {
             Prepared[] statements = new Prepared[2];
             switch (type){
                 case PERSIST:
-                    for(Prepared p :template.getStatements(type)){
+                    for(Prepared p : template.getStatements(type)){
                         Class<?> clazz = p.getClass();
                         if(clazz.equals(PreparedTableCreate.class) && !tableExists && PersistenceConfig.getInstance().getPropertyByKey("create-tables").equals("true")){
                             statements[0]=p;
                             tableExists = true;
 //                            tableMatches = true;
+                            OrmLogger.ormLog.debug("Preparing to CREATE TABLE: " + p.toString());
                         } else if(clazz.equals(PreparedTableAlter.class) &&
                                 tableExists &&
 //                                tableMatches &&
                                 PersistenceConfig.getInstance().getPropertyByKey("alter-tables").equals("true")){
                             //TODO statements[0]=p;
+                            OrmLogger.ormLog.debug("Preparing to ALTER TABLE: " + p.toString());
                         } else if(clazz.equals(PreparedUpdate.class) && tableExists && rowExists){
                             statements[1]=p;
+                            OrmLogger.ormLog.debug("Preparing to UPDATE TABLE: " + p.toString());
                         } else if(clazz.equals(PreparedInsert.class) && tableExists && !rowExists){
                             statements[1]=p;
+                            OrmLogger.ormLog.debug("Preparing to INSERT INTO TABLE: " + p.toString());
                         }
                     }
                     break;
@@ -100,6 +104,7 @@ public class Transaction implements EntityTransaction {
                         Class<?> clazz = p.getClass();
                         if(clazz.equals(PreparedDelete.class) && tableExists && rowExists){
                             statements[0]=p;
+                            OrmLogger.ormLog.debug("Preparing to REMOVE FROM TABLE: " + p.toString());
                         }
                     }
                     break;
