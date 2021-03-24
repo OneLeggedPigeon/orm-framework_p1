@@ -7,7 +7,15 @@ import java.sql.Connection;
 
 //TODO
 public class PreparedDelete extends Prepared {
+    /**
+     * <pre>
+     *     DELETE FROM schema.table WHERE id = ?
+     * </pre>
+     */
     public PreparedDelete(EntityTemplate template) {
         super(template);
+        idParameterLast = true;
+        hasIdParameter = true;
+        text = "DELETE FROM "+TABLE_SCHEMA+"."+TABLE_NAME+" WHERE "+template.getIdColumn().getName()+" = ?";
     }
 }

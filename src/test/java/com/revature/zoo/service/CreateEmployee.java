@@ -18,26 +18,26 @@ public class CreateEmployee {
         entitymanager.getTransaction( ).begin( );
 
         Employee employee0 = new Employee( );
-        employee0.setEid( 1 );
         employee0.setEname( "Gopal0" );
         employee0.setSalary( 40000 );
         employee0.setDeg( "Technical Manager" );
 
         Employee employee1 = new Employee( );
-        employee1.setEid( 2 );
         employee1.setEname( "Gopal1" );
         employee1.setSalary( 40000 );
         employee1.setDeg( "Technical Manager" );
 
         Employee employee2 = new Employee( );
-        employee2.setEid( 3 );
+        employee2.setEid( 2 );
         employee2.setEname( "Gopal2" );
         employee2.setSalary( 40000 );
         employee2.setDeg( "Technical Manager" );
 
-        entitymanager.persist( employee0 );
+        entitymanager.remove( employee0 );
         entitymanager.persist( employee1 );
-        entitymanager.persist( employee2 );
+        entitymanager.remove( employee1 );
+        entitymanager.remove( employee2 );
+        entitymanager.persist( employee0 );
         entitymanager.getTransaction( ).commit( );
 
         entitymanager.close( );

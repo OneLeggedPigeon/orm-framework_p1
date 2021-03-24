@@ -18,7 +18,7 @@ public class ConnectionFactory implements Closeable {
     private ConnectionFactory() {
         for(int i = 0; i< MAX_CONNECTIONS; i++){
 
-            OrmLogger.ormLog.debug("adding connection number "+i+" to the connection pool");
+            //OrmLogger.ormLog.debug("adding connection number "+i+" to the connection pool");
             connectionPool[i] = createConnection();
         }
         try {

@@ -14,7 +14,12 @@ public class Manager implements EntityManager {
     private Transaction transaction;
     private final EntityManagerFactory factory;
     private final SynchronizationType sync;
+    // Association between classes and EntityTemplates, used for generating context
     private final HashMap<Class<?>,EntityTemplate> entityTemplates;
+
+    public HashMap<Object, EntityTemplate> getContext() {
+        return context;
+    }
 
     private final HashMap<Object,EntityTemplate> context =  new HashMap<>();
     private boolean closed = false;
@@ -34,10 +39,8 @@ public class Manager implements EntityManager {
     public void persist(Object pojo) {
         if(closed) throw new IllegalStateException("This Manager is Closed");
         if(transaction == null || !transaction.isActive()) throw new TransactionRequiredException("No active transaction for this Manager");
-
         Class<?> clazz = pojo.getClass();
-
-        if(!(pojo instanceof Serializable) || clazz.getFields().length > 0) throw new RuntimeException(clazz+" does not follow the JavaBean standard");
+        if(clazz.getFields().length > 0) throw new RuntimeException(clazz+" does not follow the JavaBean standard");
 
         EntityTemplate template = entityTemplates.get(clazz);
 
@@ -46,12 +49,31 @@ public class Manager implements EntityManager {
 
         context.put(pojo, template);
 
-        ((Transaction) getTransaction()).add((Serializable) pojo, template, ContextType.PERSIST);
+        ((Transaction) getTransaction()).add(pojo, template, ContextType.PERSIST);
     }
 
     @Override
     public void remove(Object pojo) {
-//        ((Transaction) getTransaction()).add(StatementManager.generateSqlRemove(pojo, template));
+        if(closed) throw new IllegalStateException("This Manager is Closed");
+        if(transaction == null || !transaction.isActive()) throw new TransactionRequiredException("No active transaction for this Manager");
+        Class<?> clazz = pojo.getClass();
+        if(clazz.getFields().length > 0) throw new RuntimeException(clazz+" does not follow the JavaBean standard");
+
+        if(context.containsKey(pojo)){
+            // simply remove the object if it's been persisted and hasn't been committed
+            context.remove(pojo);
+            ((Transaction) getTransaction()).remove(pojo);
+        } else {
+            // add new remove statement
+            EntityTemplate template = entityTemplates.get(clazz);
+
+            if(!clazz.isAnnotationPresent(Entity.class)) throw new IllegalArgumentException(clazz+" is not an @Entity and cannot be removed");
+            if(template == null) throw new RuntimeException("Something went wrong with the entity template loader");
+
+            context.put(pojo, template);
+
+            ((Transaction) getTransaction()).add(pojo, template, ContextType.REMOVE);
+        }
     }
 
     @Override
@@ -66,7 +88,7 @@ public class Manager implements EntityManager {
     @Override
     public EntityTransaction getTransaction() {
         if (transaction == null){
-            transaction = new Transaction();
+            transaction = new Transaction(this);
         }
         return transaction;
     }
@@ -80,6 +102,9 @@ public class Manager implements EntityManager {
         }
     }
 
+    /**
+     * Functionality already provided by <code>persist()</code>ing a class with a set @Id that matches the primary key from a row in the matching table
+     */
     @Override
     public <T> T find(Class<T> aClass, Object o) {
         throw new UnsupportedOperationException();

@@ -32,21 +32,32 @@ class PreparedTest {
     @Test
     void testConstructorInsert() {
         PreparedInsert p = new PreparedInsert(e1);
-        assertEquals("INSERT INTO testTable (col0, col1, col2) VALUES (?, ?, ?) RETURNING col3", p.toString());
+        assertEquals("INSERT INTO testSchema.testTable (col0, col1, col2) VALUES (?, ?, ?) RETURNING col3", p.toString());
         p = new PreparedInsert(e2);
-        assertEquals("INSERT INTO testTable (col0, col1, col3) VALUES (?, ?, ?) RETURNING col2", p.toString());
+        assertEquals("INSERT INTO testSchema.testTable (col0, col1, col3) VALUES (?, ?, ?) RETURNING col2", p.toString());
         p = new PreparedInsert(e3);
-        assertEquals("INSERT INTO testTable (col0, col2, col3) VALUES (?, ?, ?) RETURNING col1", p.toString());
+        assertEquals("INSERT INTO testSchema.testTable (col0, col2, col3) VALUES (?, ?, ?) RETURNING col1", p.toString());
     }
 
     @Test
     void testConstructorUpdate() {
         PreparedUpdate p = new PreparedUpdate(e1);
-        assertEquals("UPDATE testTable SET col0 = ?, col1 = ?, col2 = ? WHERE col3 = ?", p.toString());
+        assertEquals("UPDATE testSchema.testTable SET col0 = ?, col1 = ?, col2 = ? WHERE col3 = ?", p.toString());
         p = new PreparedUpdate(e2);
-        assertEquals("UPDATE testTable SET col0 = ?, col1 = ?, col3 = ? WHERE col2 = ?", p.toString());
+        assertEquals("UPDATE testSchema.testTable SET col0 = ?, col1 = ?, col3 = ? WHERE col2 = ?", p.toString());
         p = new PreparedUpdate(e3);
-        assertEquals("UPDATE testTable SET col0 = ?, col2 = ?, col3 = ? WHERE col1 = ?", p.toString());
+        assertEquals("UPDATE testSchema.testTable SET col0 = ?, col2 = ?, col3 = ? WHERE col1 = ?", p.toString());
+    }
+
+
+    @Test
+    void testConstructorDelete() {
+        PreparedDelete p = new PreparedDelete(e1);
+        assertEquals("DELETE FROM testSchema.testTable WHERE col3 = ?", p.toString());
+        p = new PreparedDelete(e2);
+        assertEquals("DELETE FROM testSchema.testTable WHERE col2 = ?", p.toString());
+        p = new PreparedDelete(e3);
+        assertEquals("DELETE FROM testSchema.testTable WHERE col1 = ?", p.toString());
     }
 
 }
