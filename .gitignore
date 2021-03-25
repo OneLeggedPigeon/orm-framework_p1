@@ -6,3 +6,4 @@
 **/*.iml
 **/*.iws
 **/log/
+/src/main/resources/META-INF/MANIFEST.MF

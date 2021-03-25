@@ -34,10 +34,17 @@ public class CreateEmployee {
 
         entitymanager.persist( employee0 );
         entitymanager.persist( employee1 );
+        entitymanager.remove( employee1 );
         entitymanager.persist( employee2 );
 
-        System.out.println(entitymanager.find(Employee.class, 5));
+        Employee eEdit = entitymanager.find(Employee.class, 5);
+        if(eEdit != null){
+            eEdit.setSalary(0);
+            entitymanager.persist(eEdit);
+        }
+
         entitymanager.getTransaction( ).commit( );
+
 
         entitymanager.close( );
         emFactory.close( );
