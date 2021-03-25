@@ -54,7 +54,7 @@ public class Manager implements EntityManager {
         EntityTemplate template = entityTemplates.get(clazz);
 
         if(!clazz.isAnnotationPresent(Entity.class)) throw new IllegalArgumentException(clazz+" is not an @Entity and cannot be persisted");
-        if(template == null) throw new RuntimeException("Something went wrong with the entity template loader");
+        if(template == null) throw new RuntimeException("no @Entity annotated classes were read");
 
         context.put(pojo, template);
 
@@ -72,17 +72,16 @@ public class Manager implements EntityManager {
             // simply remove the object if it's been persisted and hasn't been committed
             context.remove(pojo);
             ((Transaction) getTransaction()).remove(pojo);
-        } else {
-            // add new remove statement
-            EntityTemplate template = entityTemplates.get(clazz);
-
-            if(!clazz.isAnnotationPresent(Entity.class)) throw new IllegalArgumentException(clazz+" is not an @Entity and cannot be removed");
-            if(template == null) throw new RuntimeException("Something went wrong with the entity template loader");
-
-            context.put(pojo, template);
-
-            ((Transaction) getTransaction()).add(pojo, template, ContextType.REMOVE);
         }
+        // add new remove statement
+        EntityTemplate template = entityTemplates.get(clazz);
+
+        if(!clazz.isAnnotationPresent(Entity.class)) throw new IllegalArgumentException(clazz+" is not an @Entity and cannot be removed");
+        if(template == null) throw new RuntimeException("Something went wrong with the entity template loader");
+
+        context.put(pojo, template);
+
+        ((Transaction) getTransaction()).add(pojo, template, ContextType.REMOVE);
     }
 
     @Override
