@@ -16,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -45,8 +46,24 @@ public class Transaction implements EntityTransaction {
 
     @Override
     public void begin() {
-        if(isActive()) throw new IllegalStateException("Thread is active");
-        active = true;
+        awaitBegin();
+    }
+
+    /**
+     * waits for the ExecutorService to finish all it's other tasks, then calls begin if active == false
+     */
+    private void awaitBegin() {
+        class Task implements Runnable {
+            public void run() {
+                if(isActive()) throw new IllegalStateException("Thread is active");
+                active = true;
+            }
+        }
+        try {
+            thread.submit(new Task()).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -55,10 +72,6 @@ public class Transaction implements EntityTransaction {
     @Override
     public void commit() {
         thread.execute(new Commit());
-    }
-
-    public void shutDown() {
-        thread.shutdown();
     }
 
     private class Commit implements Runnable {
@@ -170,6 +183,10 @@ public class Transaction implements EntityTransaction {
             manager.getContext().clear();
             active = false;
         }
+    }
+
+    public void shutDown() {
+        thread.shutdown();
     }
 
     @Override
