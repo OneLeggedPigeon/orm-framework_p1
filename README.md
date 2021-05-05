@@ -26,8 +26,12 @@ Project one - A custom ORM Framework for database operations.
 ## Features
 
 List of features
-* Utilize abstraced Entities for database manipulation
-* Use the framework without any knowlege of SQL
+* Programmatic persistence of entities (basic CRUD support)
+* Basic transaction management (begin, commit, savepoint, rollback)
+* Connection pooling
+* Lightweight session creation
+* Session-based caching to minimize calls to the database
+* Multithreading support for executing queries
 
 ## Getting Started
    
