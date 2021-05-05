@@ -31,7 +31,7 @@ List of features
 
 ## Getting Started
    
-(include git clone command)
+git clone https://github.com/OneLeggedPigeon/orm-framework_p1.git
 
 ## Contributors
 
